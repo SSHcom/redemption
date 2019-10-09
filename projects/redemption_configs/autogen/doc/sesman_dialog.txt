@@ -44,6 +44,10 @@ cfg::mod_rdp::enable_nla <- enable_nla   [bool]
 cfg::mod_rdp::enable_kerberos <- enable_kerberos   [bool]
     If enabled, NLA authentication will try Kerberos before NTLM.
     (if enable_nla is disabled, this value is ignored).
+cfg::mod_rdp::allow_channels <- allow_channels   [std::string]
+    Enables channels names (example: channel1,channel2,etc). Character * only, activate all with low priority.
+cfg::mod_rdp::deny_channels <- deny_channels   [std::string]
+    Disable channels names (example: channel1,channel2,etc). Character * only, deactivate all with low priority.
 cfg::mod_rdp::server_redirection_support <- server_redirection   [bool]
     Enables Server Redirection Support.
 cfg::mod_rdp::load_balance_info <- load_balance_info   [std::string]
