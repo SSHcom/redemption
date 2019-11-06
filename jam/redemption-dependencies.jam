@@ -46,11 +46,15 @@ constant LIB_DEPENDENCIES :
 EXE_DEPENDENCIES +=
     <library>app_path_exe.o
     <library>log.o
+    <linkflags>-lpthread
+    <linkflags>-ldl
     $(GCOV_NO_BUILD)
 ;
 
 constant EXE_DEPENDENCIES_NO_SYSLOG :
     <library>app_path_exe.o
     <library>log_print.o
+    <linkflags>-lpthread
+    <linkflags>-ldl
     $(GCOV_NO_BUILD)
 ;
