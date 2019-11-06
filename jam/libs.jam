@@ -1,10 +1,10 @@
 lib bz2 ;
-lib crypto ;
+lib crypto : : <link>static ;
 lib dl ;
 lib gssapi_krb5 ;
 lib krb5 ;
 lib libpng : : <name>png ;
-lib openssl : : <name>ssl ;
+lib openssl : : <link>static <name>ssl ;
 lib snappy ;
 lib z ;
 alias png : libpng z ;
