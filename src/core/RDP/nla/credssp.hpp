@@ -832,11 +832,11 @@ inline std::vector<uint8_t> emitTSRequest(uint32_t version,
 
 inline TSRequest recvTSRequest(bytes_view data, bool verbose)
 {
-    if (verbose) {
+    //if (verbose) {
         LOG(LOG_INFO, "recv TSRequest full dump++++++++++++++++++++++++++++++++");
         hexdump_d(data);
         LOG(LOG_INFO, "recv TSRequest hexdump - START PARSING DATA+++++++++++++");
-    }
+    //}
 
     InStream stream(data);
     TSRequest self(6);
