@@ -924,11 +924,11 @@ struct TSPasswordCreds {
 
 inline TSPasswordCreds recvTSPasswordCreds(bytes_view data, bool verbose)
 {
-    if (verbose) {
+    //if (verbose) {
         LOG(LOG_INFO, "recvTSPasswordCreds full dump--------------------------------");
         hexdump_d(data);
         LOG(LOG_INFO, "recvTSPasswordCreds hexdump - START PARSING DATA-------------");
-    }
+    //}
 
     InStream stream(data); // check all is consumed
     TSPasswordCreds self;
