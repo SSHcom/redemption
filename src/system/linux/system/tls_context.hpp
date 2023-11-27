@@ -515,7 +515,7 @@ public:
         // is currently set by default. See the SECURE RENEGOTIATION section for more details.
 
         LOG(LOG_INFO, "TLSContext::enable_server_tls() set SSL options");
-        SSL_CTX_set_options(ctx, SSL_OP_ALL);
+        SSL_CTX_set_options(ctx, SSL_OP_ALL | SSL_OP_NO_TICKET);
 
         set_tls_levels(ctx, tls_min_level, tls_max_level);
 
