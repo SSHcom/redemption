@@ -11,6 +11,8 @@ SPDX-License-Identifier: GPL-2.0-or-later
 #include "utils/random.hpp"
 
 #include <limits>
+
+#if __GLIBC__ > 2 || ( __GLIBC__ == 2 && __GLIBC_MINOR__ >= 25 )
 #include <sys/random.h>
 
 
@@ -43,3 +45,55 @@ public:
         }
     }
 };
+#else // glibc < 2.25
+#include <cstdio>
+
+const size_t RAND_BUF_SIZE = 1024;
+
+class URandom final : public Random
+{
+public:
+    URandom() {
+        std::FILE* f = std::fopen("/dev/urandom", "r");
+        if (!f) {
+            LOG(LOG_ERR, "failed to open /dev/urandom");
+            throw Error(ERR_RANDOM_SOURCE_FAILED);
+        }
+        _devRandom = f;
+        _bufSize = 0;
+    }
+
+    ~URandom() {
+        std::fclose(_devRandom);
+    }
+
+    void random(writable_bytes_view buf) override {
+        uint8_t* data = buf.data();
+        size_t len = buf.size();
+        size_t written = 0;
+
+        while (written < len) {
+            if (_bufSize == 0) {
+                size_t n = fread(_buf, sizeof(uint8_t), RAND_BUF_SIZE, _devRandom);
+                if (n != RAND_BUF_SIZE) {
+                    LOG(LOG_ERR, "random source failed to provide random data [%s]", strerror(errno));
+                    throw Error(ERR_RANDOM_SOURCE_FAILED);
+                }
+                _bufSize = RAND_BUF_SIZE;
+            }
+            size_t n = len - written;
+            if (n > _bufSize) {
+                n = _bufSize;
+            }
+            memcpy(data + written, _buf + (RAND_BUF_SIZE - _bufSize), n);
+            _bufSize -= n;
+            written += n;
+        }
+    }
+
+protected:
+    std::FILE* _devRandom;
+    uint8_t _buf[RAND_BUF_SIZE];
+    size_t _bufSize;
+};
+#endif // glibc < 2.25

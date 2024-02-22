@@ -1,10 +1,10 @@
 lib bz2 ;
-lib crypto ;
+lib crypto : : <link>static ;
 lib dl ;
 lib gssapi_krb5 ;
 lib krb5 ;
 lib libpng : : <name>png ;
-lib openssl : : <name>ssl ;
+lib openssl : : <link>static <name>ssl ;
 lib snappy ;
 lib z ;
 alias png : libpng z ;
@@ -14,7 +14,7 @@ explicit bz2 crypto dl gssapi_krb5 krb5 libpng openssl snappy z png ;
 ## hyperscan {
 if $(NO_HYPERSCAN) = 0
 {
-    lib hyperscan : : <name>hs ;
+    lib hyperscan : : <link>static <name>hs ;
 }
 else
 {
