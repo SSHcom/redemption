@@ -12,7 +12,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <limits>
 
-#ifndef COMPAT_CENTOS7
+#if __GLIBC__ > 2 || ( __GLIBC__ == 2 && __GLIBC_MINOR__ >= 25 )
 #include <sys/random.h>
 
 
@@ -45,7 +45,7 @@ public:
         }
     }
 };
-#else // COMPAT_CENTOS7
+#else // glibc < 2.25
 #include <cstdio>
 
 const size_t RAND_BUF_SIZE = 1024;
@@ -105,4 +105,4 @@ protected:
     uint8_t _buf[RAND_BUF_SIZE];
     size_t _bufSize;
 };
-#endif // COMPAT_CENTOS7
+#endif // glibc < 2.25
