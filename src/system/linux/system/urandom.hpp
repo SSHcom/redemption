@@ -59,13 +59,11 @@ public:
             LOG(LOG_ERR, "failed to open /dev/urandom");
             throw Error(ERR_RANDOM_SOURCE_FAILED);
         }
-        LOG(LOG_INFO, "opened /dev/urandom");
         _devRandom = f;
         _bufSize = 0;
     }
 
     ~URandom() {
-        LOG(LOG_INFO, "closed /dev/urandom");
         std::fclose(_devRandom);
     }
 
@@ -81,23 +79,16 @@ public:
                     LOG(LOG_ERR, "random source failed to provide random data [%s]", strerror(errno));
                     throw Error(ERR_RANDOM_SOURCE_FAILED);
                 }
-                LOG(LOG_INFO, "read from /dev/urandom");
                 _bufSize = RAND_BUF_SIZE;
             }
             size_t n = len - written;
-            if (len > _bufSize) {
+            if (n > _bufSize) {
                 n = _bufSize;
             }
             memcpy(data + written, _buf + (RAND_BUF_SIZE - _bufSize), n);
             _bufSize -= n;
             written += n;
         }
-        LOG(LOG_INFO, "returned %d bytes of random data", len);
-        // size_t n = fread(data, sizeof(uint8_t), len, _devRandom);
-        // if (n != len) {
-        //     LOG(LOG_ERR, "random source failed to provide random data [%s]", strerror(errno));
-        //     throw Error(ERR_RANDOM_SOURCE_FAILED);
-        // }
     }
 
 protected:
