@@ -75,6 +75,10 @@ ChannelsAuthorizations make_channels_authorizations(Inifile const& ini)
 
     if (ini.get<cfg::globals::enable_wab_integration>()) {
         auto result = compute_authorized_channels(allow, deny, ini.get<cfg::context::proxy_opt>());
+        /*** PrivX Patch 34.0 ***/
+        LOG(LOG_INFO, "Channels allowed: %s", result.first);
+        LOG(LOG_INFO, "CHannels denied: %s", result.second);
+        /*** PrivX Patch 34.0 ***/
         return ChannelsAuthorizations(result.first, result.second);
     }
     return ChannelsAuthorizations(allow, deny);
