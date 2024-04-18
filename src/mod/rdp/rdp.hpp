@@ -2320,7 +2320,9 @@ public:
             auto const& message = this->vars.get<cfg::server_cert::external_response>();
 
             if (message == "Ok" || message == "ok") {
-                LOG(LOG_INFO, "Certificate was valid according to authentifier");
+                /*** PrivX Patch 34.0 ***/
+                this->private_rdp_negociation->result = CertificateResult::valid;
+                /*** PrivX Patch END ***/
             }
             else {
                 LOG(LOG_INFO, "Certificate was invalid according to authentifier: %s", message);
