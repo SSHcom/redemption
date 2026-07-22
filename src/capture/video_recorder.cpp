@@ -128,7 +128,7 @@ namespace
             ::unlink(this->final_filename.c_str());
         }
 
-        int write(uint8_t * buf, int buf_size)
+        int write(uint8_t const* buf, int buf_size)
         {
             assert(buf_size >= 0);
 
@@ -140,7 +140,7 @@ namespace
 
             iovec iov[]{
                 {this->buffer.get(), size_t(this->buffer_len)},
-                {buf, size_t(buf_size)}
+                {const_cast<uint8_t*>(buf), size_t(buf_size)}
             };
             ssize_t len = writev(this->fd.fd(), iov, 2);
             ssize_t total = this->buffer_len + buf_size;
