@@ -448,7 +448,7 @@ video_recorder::video_recorder(
         1,                            // writable
         &this->d->out_file,           // user-specific data
         nullptr,                      // function for refilling the buffer, may be nullptr.
-        [](void * data, uint8_t * buf, int buf_size) {
+        [](void * data, auto buf, int buf_size) {
             return static_cast<VideoRecorderOutputFile*>(data)->write(buf, buf_size);
         },
         [](void * data, int64_t offset, int whence) {
